@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#e9e5da"><meta name="description" content="An interactive architectural study of the Stone House, a pavilion of light, stone and open space.">
-  <title>MONOLITH · Stone House No. 01</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23272b28' d='M8 8h18v48H8zm30 0h18v48H38z'/%3E%3C/svg%3E"><link rel="stylesheet" href="./styles.css">
+  <title>MONOLITH · Stone House No. 01</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23272b28' d='M8 8h18v48H8zm30 0h18v48H38z'/%3E%3C/svg%3E"><link rel="stylesheet" href="./styles.css?v=20261020.2">
 </head>
 <body>
   <a class="skip" href="#project">Skip to project details</a>
@@ -20,6 +20,6 @@
   <aside class="model-controls" aria-label="Model controls"><div class="floor-control"><span class="control-label">Explore a level</span><div class="segments" role="group" aria-label="Floor selection"><button data-floor="all" aria-pressed="true">Whole house</button><button data-floor="living" aria-pressed="false">Living</button><button data-floor="roof" aria-pressed="false">Roof</button></div></div><label class="daylight"><span class="control-label">Daylight <output id="time-output">14:00</output></span><input id="daylight" type="range" min="7" max="19" value="14" step="0.25" aria-label="Time of day"><span class="range-end"><span>07:00</span><span>19:00</span></span></label><span class="drag-hint">Drag the house to look around <button id="orbit-turn" aria-label="Turn the building view">Turn view ↻</button></span></aside>
   <div class="loading" id="loading"><span></span>Building the space</div>
   <dialog id="project-dialog" aria-labelledby="dialog-title"><div class="dialog-head"><span class="eyebrow">MONOLITH / Project file 001</span><button id="close-dialog" class="icon-button" aria-label="Close project notes">×</button></div><h2 id="dialog-title">Stone House.<br><em>Open by nature.</em></h2><p>A two-level pavilion imagined for a quiet Atlantic landscape. Limestone planes, slender columns and full-height glazing create rooms that hold the light without enclosing it.</p><dl class="spec-list"><div><dt>Project</dt><dd>Concept residence</dd></div><div><dt>Built area</dt><dd>318 m², design study</dd></div><div><dt>Structure</dt><dd>Stone, concrete, glass</dd></div><div><dt>Current level</dt><dd id="selected-floor">Whole house</dd></div><div><dt>Sun study</dt><dd id="selected-time">14:00</dd></div></dl><p class="dialog-caption" id="floor-description">The full composition brings living, terrace and roof together.</p><button id="save-spec" class="solid-button">Save project notes <span aria-hidden="true">↓</span></button><p class="save-feedback" id="save-feedback" role="status"></p><p class="concept-note">This is an independent design concept, not a commissioned building or a property listing.</p></dialog>
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./app.js?v=20261020.2"></script>
 </body>
 </html>
