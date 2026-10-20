@@ -1,25 +1,236 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#e9e5da"><meta name="description" content="An interactive architectural study of the Stone House, a pavilion of light, stone and open space.">
-  <title>MONOLITH · Stone House No. 01</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23272b28' d='M8 8h18v48H8zm30 0h18v48H38z'/%3E%3C/svg%3E"><link rel="stylesheet" href="./styles.css?v=20261020.2">
-</head>
-<body>
-  <a class="skip" href="#project">Skip to project details</a>
-  <div id="scene" aria-label="Interactive 3D model of the Stone House. Drag to change your viewing angle." role="img"></div>
-  <div class="scene-fallback" aria-live="polite"><svg viewBox="0 0 800 500" role="img" aria-label="Architectural perspective drawing of a two-level stone pavilion"><path d="M80 300 420 130 730 255 390 430Z" fill="#c5beac"/><path d="M160 245 450 100 690 197 400 342Z" fill="#e9e5da" stroke="#777c71"/><path d="M160 245v60l240 97v-60M690 197v60L400 402" fill="#a6b3a8" stroke="#777c71"/><path d="m140 205 310-155 260 105-310 155Z" fill="#e0d9c8" stroke="#777c71"/><path d="M140 205v20l260 105v-20m310-155v20L400 330" fill="#aaa591"/><path d="M175 235v50m70-22v50m75-24v50m90-42v54m70-89v54m70-89v54m70-89v54" stroke="#6a7266" stroke-width="7"/></svg><p>Still a place to explore. The architectural story and specification are available below.</p></div>
-  <header class="site-header"><a class="brand" href="#home" aria-label="Monolith home"><span class="brand-icon" aria-hidden="true">Ⅱ</span> MONOLITH</a><div class="header-label">Architecture as an experience.</div><button class="text-button" id="open-project">Project notes <span aria-hidden="true">↗</span></button></header>
-  <main id="project">
-    <section class="chapter hero" id="home" data-chapter="0"><div class="architectural-title" aria-hidden="true">MONOLITH</div><div class="chapter-content"><p class="eyebrow">Independent architecture study / No. 01</p><h1>Space.<br><em>Held in light.</em></h1><p class="intro">A pavilion you can move through.<br>Let the architecture open around you.</p><a class="explore-link" href="#structure">Enter the architecture <span aria-hidden="true">↓</span></a></div><div class="hero-meta"><span>STONE HOUSE</span><span>38° 43′ N &nbsp; 09° 08′ W<br>Imagined on the Atlantic coast</span></div><div class="vertical-note">NOT JUST A VIEW. A WAY THROUGH.</div></section>
-    <section class="chapter" id="structure" data-chapter="1"><div class="chapter-content right"><p class="eyebrow">01 / Open the section</p><h2>The space<br><em>between.</em></h2><p>The roof lifts. The upper floor follows. A whole house becomes a section you can look into.</p><div class="detail-rule"><span>Three deliberate planes</span><span>01 / 03</span></div></div></section>
-    <section class="chapter" id="light" data-chapter="2"><div class="chapter-content"><p class="eyebrow">02 / Cross the threshold</p><h2>Come<br><em>inside.</em></h2><p>Beyond the glass, the scale becomes human. Soft furniture, warm timber and a garden at the end of the room. Move the sun. Make the room yours.</p><div class="detail-rule"><span>Architecture from the inside</span><span>02 / 03</span></div></div></section>
-    <section class="chapter final" id="residence" data-chapter="3"><div class="chapter-content right"><p class="eyebrow">03 / The whole</p><h2>Space to<br><em>be still.</em></h2><p>An imagined residence for slow mornings, long shadows and the everyday pleasure of being somewhere considered.</p><button class="solid-button" id="open-spec">Explore the project <span aria-hidden="true">↗</span></button><p class="concept-note">A spatial concept. No property is offered for sale.</p></div><footer><span>MONOLITH / 2026</span><span>Independent concept by BlackStack Studio</span><a href="#home">Back to the beginning ↑</a></footer></section>
-  </main>
-  <nav class="chapter-nav" aria-label="Project chapters"><a href="#home" aria-label="Overview" class="active"><span>00</span></a><a href="#structure" aria-label="Structure"><span>01</span></a><a href="#light" aria-label="Light"><span>02</span></a><a href="#residence" aria-label="The whole"><span>03</span></a></nav>
-  <aside class="model-controls" aria-label="Model controls"><div class="floor-control"><span class="control-label">Explore a level</span><div class="segments" role="group" aria-label="Floor selection"><button data-floor="all" aria-pressed="true">Whole house</button><button data-floor="living" aria-pressed="false">Living</button><button data-floor="roof" aria-pressed="false">Roof</button></div></div><label class="daylight"><span class="control-label">Daylight <output id="time-output">14:00</output></span><input id="daylight" type="range" min="7" max="19" value="14" step="0.25" aria-label="Time of day"><span class="range-end"><span>07:00</span><span>19:00</span></span></label><span class="drag-hint">Drag the house to look around <button id="orbit-turn" aria-label="Turn the building view">Turn view ↻</button></span></aside>
-  <div class="loading" id="loading"><span></span>Building the space</div>
-  <dialog id="project-dialog" aria-labelledby="dialog-title"><div class="dialog-head"><span class="eyebrow">MONOLITH / Project file 001</span><button id="close-dialog" class="icon-button" aria-label="Close project notes">×</button></div><h2 id="dialog-title">Stone House.<br><em>Open by nature.</em></h2><p>A two-level pavilion imagined for a quiet Atlantic landscape. Limestone planes, slender columns and full-height glazing create rooms that hold the light without enclosing it.</p><dl class="spec-list"><div><dt>Project</dt><dd>Concept residence</dd></div><div><dt>Built area</dt><dd>318 m², design study</dd></div><div><dt>Structure</dt><dd>Stone, concrete, glass</dd></div><div><dt>Current level</dt><dd id="selected-floor">Whole house</dd></div><div><dt>Sun study</dt><dd id="selected-time">14:00</dd></div></dl><p class="dialog-caption" id="floor-description">The full composition brings living, terrace and roof together.</p><button id="save-spec" class="solid-button">Save project notes <span aria-hidden="true">↓</span></button><p class="save-feedback" id="save-feedback" role="status"></p><p class="concept-note">This is an independent design concept, not a commissioned building or a property listing.</p></dialog>
-  <script type="module" src="./app.js?v=20261020.2"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#e9e5da" />
+    <meta
+      name="description"
+      content="An interactive architectural study of the Stone House, a pavilion of light, stone and open space."
+    />
+    <title>MONOLITH · Stone House No. 01</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23272b28' d='M8 8h18v48H8zm30 0h18v48H38z'/%3E%3C/svg%3E"
+    />
+    <link
+      rel="stylesheet"
+      href="./styles.css?v=fb8279a02f6f63b340a24228846a1376e35156c4c332648331081f4b843dde68"
+    />
+  </head>
+  <body>
+    <a class="skip" href="#project">Skip to project details</a>
+    <div
+      id="scene"
+      aria-label="Interactive 3D model of the Stone House. Drag to change your viewing angle."
+      role="img"
+    ></div>
+    <div class="scene-fallback" aria-live="polite">
+      <svg
+        viewBox="0 0 800 500"
+        role="img"
+        aria-label="Architectural perspective drawing of a two-level stone pavilion"
+      >
+        <path d="M80 300 420 130 730 255 390 430Z" fill="#c5beac" />
+        <path
+          d="M160 245 450 100 690 197 400 342Z"
+          fill="#e9e5da"
+          stroke="#777c71"
+        />
+        <path
+          d="M160 245v60l240 97v-60M690 197v60L400 402"
+          fill="#a6b3a8"
+          stroke="#777c71"
+        />
+        <path
+          d="m140 205 310-155 260 105-310 155Z"
+          fill="#e0d9c8"
+          stroke="#777c71"
+        />
+        <path d="M140 205v20l260 105v-20m310-155v20L400 330" fill="#aaa591" />
+        <path
+          d="M175 235v50m70-22v50m75-24v50m90-42v54m70-89v54m70-89v54m70-89v54"
+          stroke="#6a7266"
+          stroke-width="7"
+        />
+      </svg>
+      <p>
+        Still a place to explore. The architectural story and specification are
+        available below.
+      </p>
+    </div>
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="Monolith home"
+        ><span class="brand-icon" aria-hidden="true">Ⅱ</span> MONOLITH</a
+      >
+      <div class="header-label">Architecture as an experience.</div>
+      <button class="text-button" id="open-project">
+        Project notes <span aria-hidden="true">↗</span>
+      </button>
+    </header>
+    <main id="project">
+      <section class="chapter hero" id="home" data-chapter="0">
+        <div class="architectural-title" aria-hidden="true">MONOLITH</div>
+        <div class="chapter-content">
+          <p class="eyebrow">Independent architecture study / No. 01</p>
+          <h1>Space.<br /><em>Held in light.</em></h1>
+          <p class="intro">
+            A pavilion you can move through.<br />Let the architecture open
+            around you.
+          </p>
+          <a class="explore-link" href="#structure"
+            >Enter the architecture <span aria-hidden="true">↓</span></a
+          >
+        </div>
+        <div class="hero-meta">
+          <span>STONE HOUSE</span
+          ><span
+            >38° 43′ N &nbsp; 09° 08′ W<br />Imagined on the Atlantic
+            coast</span
+          >
+        </div>
+        <div class="vertical-note">NOT JUST A VIEW. A WAY THROUGH.</div>
+      </section>
+      <section class="chapter" id="structure" data-chapter="1">
+        <div class="chapter-content right">
+          <p class="eyebrow">01 / Open the section</p>
+          <h2>The space<br /><em>between.</em></h2>
+          <p>
+            The roof lifts. The upper floor follows. A whole house becomes a
+            section you can look into.
+          </p>
+          <div class="detail-rule">
+            <span>Three deliberate planes</span><span>01 / 03</span>
+          </div>
+        </div>
+      </section>
+      <section class="chapter" id="light" data-chapter="2">
+        <div class="chapter-content">
+          <p class="eyebrow">02 / Cross the threshold</p>
+          <h2>Come<br /><em>inside.</em></h2>
+          <p>
+            Beyond the glass, the scale becomes human. Soft furniture, warm
+            timber and a garden at the end of the room. Move the sun. Make the
+            room yours.
+          </p>
+          <div class="detail-rule">
+            <span>Architecture from the inside</span><span>02 / 03</span>
+          </div>
+        </div>
+      </section>
+      <section class="chapter final" id="residence" data-chapter="3">
+        <div class="chapter-content right">
+          <p class="eyebrow">03 / The whole</p>
+          <h2>Space to<br /><em>be still.</em></h2>
+          <p>
+            An imagined residence for slow mornings, long shadows and the
+            everyday pleasure of being somewhere considered.
+          </p>
+          <button class="solid-button" id="open-spec">
+            Explore the project <span aria-hidden="true">↗</span>
+          </button>
+          <p class="concept-note">
+            A spatial concept. No property is offered for sale.
+          </p>
+        </div>
+        <footer>
+          <span>MONOLITH / 2026</span
+          ><span>Independent concept by BlackStack Studio</span
+          ><a href="#home">Back to the beginning ↑</a>
+        </footer>
+      </section>
+    </main>
+    <nav class="chapter-nav" aria-label="Project chapters">
+      <a href="#home" aria-label="Overview" class="active"><span>00</span></a
+      ><a href="#structure" aria-label="Structure"><span>01</span></a
+      ><a href="#light" aria-label="Light"><span>02</span></a
+      ><a href="#residence" aria-label="The whole"><span>03</span></a>
+    </nav>
+    <aside class="model-controls" aria-label="Model controls">
+      <div class="floor-control">
+        <span class="control-label">Explore a level</span>
+        <div class="segments" role="group" aria-label="Floor selection">
+          <button data-floor="all" aria-pressed="true">Whole house</button
+          ><button data-floor="living" aria-pressed="false">Living</button
+          ><button data-floor="roof" aria-pressed="false">Roof</button>
+        </div>
+      </div>
+      <label class="daylight"
+        ><span class="control-label"
+          >Daylight <output id="time-output">14:00</output></span
+        ><input
+          id="daylight"
+          type="range"
+          min="7"
+          max="19"
+          value="14"
+          step="0.25"
+          aria-label="Time of day"
+        /><span class="range-end"
+          ><span>07:00</span><span>19:00</span></span
+        ></label
+      ><span class="drag-hint"
+        >Drag the house to look around
+        <button id="orbit-turn" aria-label="Turn the building view">
+          Turn view ↻
+        </button></span
+      >
+    </aside>
+    <div class="loading" id="loading"><span></span>Building the space</div>
+    <dialog id="project-dialog" aria-labelledby="dialog-title">
+      <div class="dialog-head">
+        <span class="eyebrow">MONOLITH / Project file 001</span
+        ><button
+          id="close-dialog"
+          class="icon-button"
+          aria-label="Close project notes"
+        >
+          ×
+        </button>
+      </div>
+      <h2 id="dialog-title">Stone House.<br /><em>Open by nature.</em></h2>
+      <p>
+        A two-level pavilion imagined for a quiet Atlantic landscape. Limestone
+        planes, slender columns and full-height glazing create rooms that hold
+        the light without enclosing it.
+      </p>
+      <dl class="spec-list">
+        <div>
+          <dt>Project</dt>
+          <dd>Concept residence</dd>
+        </div>
+        <div>
+          <dt>Built area</dt>
+          <dd>318 m², design study</dd>
+        </div>
+        <div>
+          <dt>Structure</dt>
+          <dd>Stone, concrete, glass</dd>
+        </div>
+        <div>
+          <dt>Current level</dt>
+          <dd id="selected-floor">Whole house</dd>
+        </div>
+        <div>
+          <dt>Sun study</dt>
+          <dd id="selected-time">14:00</dd>
+        </div>
+      </dl>
+      <p class="dialog-caption" id="floor-description">
+        The full composition brings living, terrace and roof together.
+      </p>
+      <button id="save-spec" class="solid-button">
+        Save project notes <span aria-hidden="true">↓</span>
+      </button>
+      <p class="save-feedback" id="save-feedback" role="status"></p>
+      <p class="concept-note">
+        This is an independent design concept, not a commissioned building or a
+        property listing.
+      </p>
+    </dialog>
+    <script
+      type="module"
+      src="./app.js?v=f69cacdea053b56c3ad8bfcda37a6a68159e763d15e99d9dcb5126430af8aecf"
+    ></script>
+  </body>
 </html>
