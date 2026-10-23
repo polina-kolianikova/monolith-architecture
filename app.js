@@ -89,6 +89,17 @@ $("#orbit-turn").addEventListener("click", () => {
   dragTarget = dragTarget > 0.55 ? -0.5 : dragTarget + 0.35;
   invalidate();
 });
+// The control panel changes height with fonts, orientation and safe-area layout.
+const modelControls = $(".model-controls");
+const measureModelControls = () => {
+  document.documentElement.style.setProperty(
+    "--model-controls-height",
+    `${Math.ceil(modelControls.getBoundingClientRect().height)}px`,
+  );
+};
+new ResizeObserver(measureModelControls).observe(modelControls);
+measureModelControls();
+
 const chapters = [...document.querySelectorAll(".chapter")],
   links = [...document.querySelectorAll(".chapter-nav a")];
 function scrollProgress() {
@@ -584,6 +595,89 @@ try {
     { p: [0.8, 1.8, 1.65], l: [0.6, 1.4, -3.8], e: 0 },
     { p: [-17, 9, -18], l: [0, 2.5, 0], e: 0 },
   ];
+  const modelBox = new THREE.Box3(),
+    modelCorner = new THREE.Vector3();
+  let phoneOffset = 0,
+    phoneZoom = 1,
+    phoneFraming = false;
+  function screenBounds() {
+    house.updateMatrixWorld(true);
+    camera.updateMatrixWorld(true);
+    modelBox.setFromObject(house);
+    let top = Infinity, bottom = -Infinity, left = Infinity, right = -Infinity;
+    for (let n = 0; n < 8; n++) {
+      modelCorner.set(
+        n & 1 ? modelBox.max.x : modelBox.min.x,
+        n & 2 ? modelBox.max.y : modelBox.min.y,
+        n & 4 ? modelBox.max.z : modelBox.min.z,
+      ).project(camera);
+      const x = (modelCorner.x + 1) * host.clientWidth * 0.5,
+        y = (1 - modelCorner.y) * host.clientHeight * 0.5;
+      top = Math.min(top, y);
+      bottom = Math.max(bottom, y);
+      left = Math.min(left, x);
+      right = Math.max(right, x);
+    }
+    return { top, bottom, left, right };
+  }
+  function framePhoneModel(d, weight) {
+    camera.clearViewOffset();
+    camera.zoom = 1;
+    camera.updateProjectionMatrix();
+    phoneFraming = false;
+    if (weight === 0) {
+      phoneOffset = 0;
+      phoneZoom = 1;
+      renderer.domElement.style.opacity = "1";
+      return;
+    }
+    const width = host.clientWidth,
+      height = host.clientHeight,
+      limitTop = $(".site-header").getBoundingClientRect().bottom + 16,
+      limitBottom = $(".model-controls").getBoundingClientRect().top - 16;
+    const reading = [...document.querySelectorAll(
+      ".chapter-content,.hero-meta,.final footer",
+    )].map((el) => el.getBoundingClientRect()).filter((rect) =>
+      rect.bottom > limitTop && rect.top < limitBottom && rect.height > 0,
+    ).sort((a, b) => a.top - b.top);
+    const gaps = [];
+    let edge = limitTop;
+    for (const rect of reading) {
+      if (rect.top - 16 > edge) gaps.push([edge, rect.top - 16]);
+      edge = Math.max(edge, rect.bottom + 16);
+    }
+    if (edge < limitBottom) gaps.push([edge, limitBottom]);
+    const base = screenBounds(),
+      centre = (base.top + base.bottom) * 0.5;
+    let best = [limitTop, limitTop], score = -Infinity;
+    for (const gap of gaps) {
+      const value = Math.min(gap[1] - gap[0], 380) - Math.abs((gap[0] + gap[1]) * 0.5 - centre) * 0.1;
+      if (value > score) { best = gap; score = value; }
+    }
+    const available = Math.max(0, best[1] - best[0]),
+      fit = Math.min(1, (width - 40) / (base.right - base.left), Math.max(65, available) / (base.bottom - base.top)),
+      desiredZoom = mix(1, Math.max(0.18, fit), weight);
+    camera.zoom = desiredZoom;
+    camera.updateProjectionMatrix();
+    const fitted = screenBounds(),
+      desiredOffset = ((fitted.top + fitted.bottom) * 0.5 - (best[0] + best[1]) * 0.5) * weight;
+    phoneZoom = frames === 0 ? desiredZoom : mix(phoneZoom, desiredZoom, d);
+    phoneOffset = frames === 0 ? desiredOffset : mix(phoneOffset, desiredOffset, d);
+    camera.zoom = phoneZoom;
+    camera.setViewOffset(width, height, 0, phoneOffset, width, height);
+    const actual = screenBounds();
+    let overlap = 0;
+    for (const rect of reading) overlap = Math.max(overlap,
+      Math.max(0, Math.min(actual.bottom, rect.bottom + 12) - Math.max(actual.top, rect.top - 12)),
+    );
+    const opacity = mix(1, smooth(45, 95, available) * (1 - smooth(0, 38, overlap)), weight);
+    renderer.domElement.style.opacity = String(opacity);
+    phoneFraming = Math.abs(phoneZoom - desiredZoom) > 0.0002 || Math.abs(phoneOffset - desiredOffset) > 0.1;
+    Object.assign(document.documentElement.dataset, {
+      modelTop: actual.top.toFixed(2), modelBottom: actual.bottom.toFixed(2),
+      modelOverlap: overlap.toFixed(2), modelOpacity: opacity.toFixed(4),
+    });
+  }
   const aColor = new THREE.Color("#ddd3c0"),
     bColor = new THREE.Color("#e9e5da");
   function frame(now) {
@@ -595,7 +689,7 @@ try {
     const dt = previous ? Math.min((now - previous) / 1000, 0.05) : 1 / 60;
     previous = now;
     const d = 1 - Math.exp(-9 * dt);
-    progress = reduced.matches
+    progress = reduced.matches || innerWidth < 800
       ? targetProgress
       : mix(progress, targetProgress, d);
     dragAngle = mix(dragAngle, dragTarget, d);
@@ -635,6 +729,7 @@ try {
       sin = Math.sin(dragAngle * (1 - inside));
     camera.position.set(x * cos + z * sin, y, z * cos - x * sin);
     camera.lookAt(lx, ly + (mobile ? 3 * fit * (1 - inside) : 0), lz);
+    framePhoneModel(reduced.matches ? 1 : 1 - Math.exp(-30 * dt), mobile ? smooth(0.12, 0.28, targetProgress) * (1 - smooth(0.08, 0.35, inside)) : 0);
     const sunT = (daylight - 7) / 12;
     sun.position.set(mix(-12, 12, sunT), 3 + Math.sin(sunT * Math.PI) * 13, 7);
     sun.color.set(
@@ -666,7 +761,7 @@ try {
     const moving =
       Math.abs(progress - targetProgress) > 0.0003 ||
       Math.abs(dragAngle - dragTarget) > 0.0003 ||
-      Math.abs(spread - targetSpread) > 0.0003;
+      Math.abs(spread - targetSpread) > 0.0003 || phoneFraming;
     diagnostics(moving ? "active" : "idle");
     if (moving) raf = requestAnimationFrame(frame);
   }
